@@ -1,0 +1,127 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">All Nodes</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        {% for name, values in servers.items %}
+        <!-- /.panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading node-collapse" style="cursor: pointer;">
+                <div class="pull-left">
+                    <i class="fa fa-server fa-fw"></i> {{ name }}
+                </div>
+                <div class="pull-right" style="line-height: 16px;">
+                    <span class="label label-{{ values.state_class_postfix }}">{{ values.state }}</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Group</th>
+                                    <th>Name</th>
+                                    <th>State</th>
+                                    <th>Uptime</th>
+                                    <th>PID</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for process in values.processes %}
+                                <tr>
+                                    <td>{{ process.group }}</td>
+                                    <td>{{ process.name }}</td>
+                                    <td class="state">
+                                        {% if process.statename == 'RUNNING' %}
+                                        <span class="label label-success">{{ process.statename }}</span>
+                                        {% elif process.statename == 'FATAL' %}
+                                        <span class="label label-danger">{{ process.statename }}</span>
+                                        {% else %}
+                                        <span class="label label-warning">{{ process.statename }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ process.uptime }}</td>
+                                    <td>{{ process.pid }}</td>
+                                    <td>
+                                        <a class="startProcess" data-node="{{ name }}" data-group="{{ process.group }}" data-name="{{ process.name }}" href="#">
+                                        {% if process.statename == 'RUNNING' %}
+                                            <i class="fa fa-repeat"></i>
+                                        {% else %}
+                                            <i class="fa fa-play"></i>
+                                        {% endif %}
+                                        </a>
+                                    </td>
+                                    <td><a class="stopProcess" data-node="{{ name }}" data-group="{{ process.group }}" data-name="{{ process.name }}" href="#"><i class="fa fa-stop"></i></a></td>
+                                    <td><a href="#"><i class="fa fa-file-text-o"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+        <!-- /.panel -->
+        {% endfor %}
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-clock-o fa-fw"></i> Recent Activity
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="list-group">
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-microchip fa-fw"></i> Restarted PName
+                        <span class="pull-right text-muted small"><em>4 minutes ago</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-server fa-fw"></i> 1 New Node
+                        <span class="pull-right text-muted small"><em>12 minutes ago</em>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-microchip fa-fw"></i> Restarted PName
+                        <span class="pull-right text-muted small"><em>45 minutes ago</em>
+                        </span>
+                    </a>
+                </div>
+                <!-- /.list-group -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-4 -->
+</div>
+
+<script>
+$('.node-collapse').click(function(e) {
+    $(this).next().collapse('toggle');
+});
+</script>
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<!-- For starting/stopping processes -->
+<script src="{% static 'js/single_node.js' %}"></script>
+
+{% endblock extrajs %}

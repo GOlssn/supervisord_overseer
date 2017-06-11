@@ -1,0 +1,145 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<style>
+pre {
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: pre-line;
+    word-wrap: break-word;
+}
+</style>
+    
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Dashboard</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-server fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div id="node_count" class="huge">{{ nodes }}</div>
+                            <div>Nodes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-object-group fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div id="group_count" class="huge">{{ groups }}</div>
+                            <div>Groups</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-microchip fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div id="process_count" class="huge">{{ processes.running }}</div>
+                            <div>Running Processes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-microchip fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div id="process_count" class="huge">{{ processes.not_running }}</div>
+                            <div>Stopped Processes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-8">
+        <!-- /.panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-file-text-o fa-fw"></i> Node Logs
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <pre>
+                    [Node One]: Server started
+                    [Node One]: Process PName was started successfully
+                    [Node Two]: Server started
+                </pre>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-8 -->
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-clock-o fa-fw"></i> Recent Activity
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="list-group">
+
+                    {%  for element in system_event_view_transformer.list %}
+                        {% if forloop.counter <= 8 %}
+
+                        <a href="#" class="list-group-item">{{element.user.username}}
+                            <i class="fa fa-microchip fa-fw"></i>{{element.description}}
+                            <span class="pull-right text-muted small"><em>{{ element.created }}</em>
+                            </span>
+                        </a>
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+                <!-- /.list-group -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-4 -->
+</div>
+<!-- /.row -->
+
+{% endblock content %}
+
+
+{% block extrajs %}
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+{% endblock extrajs %}
