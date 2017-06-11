@@ -104,3 +104,5 @@ ENV/
 
 **/settings/docker.py
 **/settings/local.py
+
+collected_statics
