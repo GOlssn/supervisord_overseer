@@ -120,7 +120,7 @@ class SingleNodeView(View):
         except Exception as e:
                 raise Http404(e)
 
-        return render(request, 'components/single_node.html', {'name': node, 'processes': processes, 'state_counts': counts, 'title': node})
+        return render(request, 'components/single_node.html', {'node': node, 'processes': processes, 'state_counts': counts, 'title': node})
 
 
 class SingleGroupView(View):
@@ -220,6 +220,76 @@ class AjaxStopProcessView(View):
         SystemEvent.stopped_process(request.user)
 
         return JsonResponse({'success': True, 'message': '{}: Stopped successfully'.format(full_name), 'state': new_state})
+
+class AjaxRestartAllProcessesView(View):
+    def post(self, request):
+        node = request.POST.get('node', None)
+
+        if not node:
+            return JsonResponse({'success': False, 'message': 'Please supply a node name'})
+
+        try:
+            node_settings = settings.NODES[node]
+            server = helpers._connect_server(node_settings)
+            processes = server.supervisor.getAllProcessInfo()
+
+            for process in processes:
+                if process['group'] == '':
+                    full_name = process['name']
+                else:
+                    full_name = '{}:{}'.format(process['group'], process['name'])
+
+                stopped = helpers._stop_process(server, full_name)
+
+                if stopped:
+                    started = server.supervisor.startProcess(full_name)
+                else:
+                    return JsonResponse({'success': False, 'message': 'Could not stop process'})
+
+                if not started:
+                    return JsonResponse({'success': False, 'message': 'Could not start process'})
+
+        except gaierror as e:
+            return JsonResponse({'success': False, 'message': e})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': e})
+
+        SystemEvent.free_text(request.user, 'Restarted all processes on {}'.format(node))
+
+        return JsonResponse({'success': True, 'message': 'Successfully restarted all processes on {}'.format(node)})
+
+
+class AjaxStopAllProcessesView(View):
+    def post(self, request):
+        node = request.POST.get('node', None)
+
+        if not node:
+            return JsonResponse({'success': False, 'message': 'Please supply a node name'})
+
+        try:
+            node_settings = settings.NODES[node]
+            server = helpers._connect_server(node_settings)
+            processes = server.supervisor.getAllProcessInfo()
+
+            for process in processes:
+                if process['group'] == '':
+                    full_name = process['name']
+                else:
+                    full_name = '{}:{}'.format(process['group'], process['name'])
+
+                stopped = helpers._stop_process(server, full_name)
+
+                if not stopped:
+                    return JsonResponse({'success': False, 'message': 'Could not stop process'})
+
+        except gaierror as e:
+            return JsonResponse({'success': False, 'message': e})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': e})
+
+        SystemEvent.free_text(request.user, 'Stopped all processes on {}'.format(node))
+
+        return JsonResponse({'success': True, 'message': 'Successfully stopped all processes on {}'.format(node)})
 
 
 class LogoutView(RedirectView):

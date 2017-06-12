@@ -91,4 +91,56 @@ $(document).ready(function () {
             type: 'POST'
         });
     });
+
+    $('.restartAllProcesses').click(function(e) {
+        e.preventDefault();
+
+        var $element = $(this);
+
+        var data = {
+            node: $element.data('node')
+        };
+
+        $.ajax({
+            url: '/ajax/restart_all_processes',
+            data: data,
+            dataType: 'json',
+            success: function (data) {
+                if (data.success == true) {
+                    location.reload()
+                } else {
+                    toastr.options.timeOut = 3000;
+                    toastr.options.positionClass = "toast-bottom-center";
+                    toastr.error('Error: ' + data.message);
+                }
+            },
+            type: 'POST'
+        });
+    });
+
+    $('.stopAllProcesses').click(function(e) {
+        e.preventDefault();
+
+        var $element = $(this);
+
+        var data = {
+            node: $element.data('node')
+        };
+
+        $.ajax({
+            url: '/ajax/stop_all_processes',
+            data: data,
+            dataType: 'json',
+            success: function (data) {
+                if (data.success == true) {
+                    location.reload()
+                } else {
+                    toastr.options.timeOut = 3000;
+                    toastr.options.positionClass = "toast-bottom-center";
+                    toastr.error('Error: ' + data.message);
+                }
+            },
+            type: 'POST'
+        });
+    });
 });

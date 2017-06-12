@@ -5,7 +5,12 @@
     
 <div class="row">
     <div class="col-lg-12">
-        <h1 id="node_name" class="page-header">{{ name }}</h1>
+        <h1 id="node_name" class="page-header">{{ node }}
+            <div class="pull-right">
+                <button class="btn btn-link restartAllProcesses" data-node="{{ node }}">Restart All</button>
+                <button class="btn btn-link stopAllProcesses" data-node="{{ node }}">Stop All</button>
+            </div>
+        </h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -107,7 +112,7 @@
                         <td>{{ process.uptime }}</td>
                         <td>{{ process.pid}}</td>
                         <td>
-                            <a class="startProcess" data-node="{{ name }}" data-group="{{ process.group }}" data-name="{{ process.name }}" href="#">
+                            <a class="startProcess" data-node="{{ node }}" data-group="{{ process.group }}" data-name="{{ process.name }}" href="#">
                             {% if process.statename == 'RUNNING' %}
                                 <i class="fa fa-repeat"></i>
                             {% else %}
@@ -115,7 +120,7 @@
                             {% endif %}
                             </a>
                         </td>
-                        <td><a class="stopProcess" data-node="{{ name }}" data-group="{{ process.group }}" data-name="{{ process.name }}" href="#"><i class="fa fa-stop "></i></a></td>
+                        <td><a class="stopProcess" data-node="{{ node }}" data-group="{{ process.group }}" data-name="{{ process.name }}" href="#"><i class="fa fa-stop "></i></a></td>
                         <td><a href="#"><i class="fa fa-file-text-o"></i></a></td>
                     </tr>
                 {% endfor %}
@@ -131,6 +136,6 @@
 
 {% block extrajs %}
 
-<script src="{% static 'js/single_node.js' %}"></script>
+<script src="{% static 'js/nodes.js' %}"></script>
 
 {% endblock extrajs %}

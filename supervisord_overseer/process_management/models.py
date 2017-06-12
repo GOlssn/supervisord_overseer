@@ -49,3 +49,10 @@ class SystemEvent(models.Model):
             SystemEvent(user=user, description='Stopped process').save()
         except OperationalError:
             connection.close()
+
+    @staticmethod
+    def free_text(user, description):
+        try:
+            SystemEvent(user=user, description=description).save()
+        except OperationalError:
+            connection.close()

@@ -14,11 +14,13 @@
         <!-- /.panel -->
         <div class="panel panel-default">
             <div class="panel-heading node-collapse" style="cursor: pointer;">
-                <div class="pull-left">
+                <div class="pull-left" style="line-height: 36px;">
                     <i class="fa fa-server fa-fw"></i> {{ name }}
                 </div>
                 <div class="pull-right" style="line-height: 16px;">
                     <span class="label label-{{ values.state_class_postfix }}">{{ values.state }}</span>
+                    <button class="btn btn-link restartAllProcesses" data-node="{{ name }}">Restart All</button>
+                    <button class="btn btn-link stopAllProcesses" data-node="{{ name }}">Stop All</button>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -122,6 +124,6 @@ $('.node-collapse').click(function(e) {
 {% block extrajs %}
 
 <!-- For starting/stopping processes -->
-<script src="{% static 'js/single_node.js' %}"></script>
+<script src="{% static 'js/nodes.js' %}"></script>
 
 {% endblock extrajs %}

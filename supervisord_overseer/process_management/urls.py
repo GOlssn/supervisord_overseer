@@ -7,6 +7,8 @@ import process_management.views as views
 urlpatterns = [
     url(r'^ajax/restart_process', login_required(views.AjaxRestartProcessView.as_view()), name='restart_process'),
     url(r'^ajax/stop_process', login_required(views.AjaxStopProcessView.as_view()), name='stop_process'),
+    url(r'^ajax/restart_all_processes', login_required(views.AjaxRestartAllProcessesView.as_view()), name='restart_all_processes'),
+    url(r'^ajax/stop_all_processes', login_required(views.AjaxStopAllProcessesView.as_view()), name='stop_all_processes'),
     url(r'^node/(?P<node>.+)/$', login_required(views.SingleNodeView.as_view()), name='single_node'),
     url(r'^group/(?P<group>.+)/$', login_required(views.SingleGroupView.as_view()), name='single_group'),
     url(r'^nodes/$', login_required(views.AllNodesView.as_view()), name='all_nodes'),
