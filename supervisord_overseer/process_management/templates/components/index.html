@@ -59,7 +59,7 @@ pre {
                             <i class="fa fa-microchip fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div id="process_count" class="huge">{{ processes.running }}</div>
+                            <div class="huge">{{ processes.running }}</div>
                             <div>Running Processes</div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ pre {
                             <i class="fa fa-microchip fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div id="process_count" class="huge">{{ processes.not_running }}</div>
+                            <div class="huge">{{ processes.not_running }}</div>
                             <div>Stopped Processes</div>
                         </div>
                     </div>
@@ -82,9 +82,7 @@ pre {
             </div>
         </div>
     </div>
-</div>
-<!-- /.row -->
-<div class="row">
+
     <div class="col-lg-8">
         <!-- /.panel -->
         <div class="panel panel-default">
@@ -106,34 +104,75 @@ pre {
     <!-- /.col-lg-8 -->
     <div class="col-lg-4">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-clock-o fa-fw"></i> Recent Activity
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <div class="list-group">
-
-                    {%  for element in system_event_view_transformer.list %}
-                        {% if forloop.counter <= 8 %}
-
-                        <a href="#" class="list-group-item">{{element.user.username}}
-                            <i class="fa fa-microchip fa-fw"></i>{{element.description}}
-                            <span class="pull-right text-muted small"><em>{{ element.created }}</em>
-                            </span>
-                        </a>
-                        {% endif %}
-
-                    {% endfor %}
+            <div class="panel-heading"><i class="fa fa-clock-o"></i> Activity Feed</div>
+            <div class="panel-body panel-activity-feed">
+                {% for event in system_event_view_transformer.list %}
+                {% if forloop.counter <= 5 %}
+                <div class="activity-feed">
+                    <div class="activity-feed-icon"><i class="fa fa-rss"></i></div>
+                    <div class="activity-feed-content">
+                        <div class="activity-feed-user">{{ event.username }}</div>
+                        <div class="activity-feed-description">{{ event.description }}</div>
+                        <div class="activity-feed-time">{{ event.created }}</div>
+                    </div>
                 </div>
-                <!-- /.list-group -->
+                {% endif %}
+                {% endfor %}
             </div>
-            <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
     </div>
-    <!-- /.col-lg-4 -->
 </div>
 <!-- /.row -->
+
+<style>
+
+    .panel-body.panel-activity-feed {
+        padding: 0;
+    }
+
+    .activity-feed {
+        width: 100%;
+        padding: 15px 15px 0px 15px;
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .activity-feed:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .activity-feed .activity-feed-icon {
+        float: left;
+        width: 25%;
+        font-size: 25px;
+        position: relative;
+        top: 0;
+        left: 10px;
+    }
+
+    .activity-feed .activity-feed-content {
+        float: right;
+        width: 75%;
+        margin-bottom: 10px;
+    }
+
+    .activity-feed .activity-feed-content .activity-feed-user {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #0d6aad;
+    }
+
+    .activity-feed .activity-feed-content .activity-feed-description {
+        margin-bottom: 10px;
+    }
+
+    .activity-feed .activity-feed-content .activity-feed-time {
+        font-size: 12px;
+        font-style: italic;
+        text-align: right;
+    }
+</style>
 
 {% endblock content %}
 
