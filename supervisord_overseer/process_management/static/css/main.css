@@ -1,0 +1,46 @@
+.panel-body.panel-activity-feed {
+    padding: 0;
+}
+
+.activity-feed {
+    width: 100%;
+    padding: 15px 15px 0px 15px;
+    border-bottom: 1px solid #dddddd;
+}
+
+.activity-feed:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.activity-feed .activity-feed-icon {
+    float: left;
+    width: 25%;
+    font-size: 25px;
+    position: relative;
+    top: 0;
+    left: 10px;
+}
+
+.activity-feed .activity-feed-content {
+    float: right;
+    width: 75%;
+    margin-bottom: 10px;
+}
+
+.activity-feed .activity-feed-content .activity-feed-user {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #0d6aad;
+}
+
+.activity-feed .activity-feed-content .activity-feed-description {
+    margin-bottom: 10px;
+}
+
+.activity-feed .activity-feed-content .activity-feed-time {
+    font-size: 12px;
+    font-style: italic;
+    text-align: right;
+}
