@@ -37,21 +37,21 @@ class SystemEvent(models.Model):
     description = models.CharField(max_length=256, default='')
 
     @staticmethod
-    def restarted_process(user):
+    def restarted_process(user, process: str, node: str):
         try:
-            SystemEvent(user=user, description='Restarted process').save()
+            SystemEvent(user=user, description='{} was restarted on {}'.format(process, node)).save()
         except OperationalError:
             connection.close()
 
     @staticmethod
-    def stopped_process(user):
+    def stopped_process(user, process: str, node: str):
         try:
-            SystemEvent(user=user, description='Stopped process').save()
+            SystemEvent(user=user, description='{} was stopped on {}'.format(process, node)).save()
         except OperationalError:
             connection.close()
 
     @staticmethod
-    def free_text(user, description):
+    def free_text(user, description: str):
         try:
             SystemEvent(user=user, description=description).save()
         except OperationalError:

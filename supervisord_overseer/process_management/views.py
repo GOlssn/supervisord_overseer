@@ -183,7 +183,7 @@ class AjaxRestartProcessView(View):
         except Exception as e:
             return JsonResponse({'success': False, 'message': e})
 
-        SystemEvent.restarted_process(request.user)
+        SystemEvent.restarted_process(request.user, full_name, node)
 
         return JsonResponse({'success': True, 'message': '{}: Restarted successfully'.format(full_name), 'state': new_state})
 
@@ -217,7 +217,7 @@ class AjaxStopProcessView(View):
         except Exception as e:
             return JsonResponse({'success': False, 'message': e})
 
-        SystemEvent.stopped_process(request.user)
+        SystemEvent.stopped_process(request.user, full_name, node)
 
         return JsonResponse({'success': True, 'message': '{}: Stopped successfully'.format(full_name), 'state': new_state})
 
